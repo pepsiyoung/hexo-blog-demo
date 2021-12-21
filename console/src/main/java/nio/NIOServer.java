@@ -4,9 +4,13 @@ import lombok.SneakyThrows;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
+import java.nio.charset.Charset;
+import java.util.Iterator;
 import java.util.Set;
 
 public class NIOServer extends Thread {
@@ -18,52 +22,42 @@ public class NIOServer extends Thread {
              ServerSocketChannel serverSocketChannel = ServerSocketChannel.open()) {
 
             serverSocketChannel.bind(new InetSocketAddress(InetAddress.getLocalHost(), 8888));
+            // 将该通道设置为非阻塞方式否则无法register
             serverSocketChannel.configureBlocking(false);
-            // 注册到Selector，并说明关注点
-            SelectionKey key = serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+            // 注册到Selector，并说明关注点是连接(当有新连接时就会被唤醒)
+            serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
             while (true) {
                 // 阻塞等待就绪的Channel，这是关键点之一
-                int selectCount = selector.select();
-                System.out.println("selectCount=" + selectCount);
+                selector.select(5000);
+
                 Set<SelectionKey> selectedKeys = selector.selectedKeys();
-                System.out.println(selectedKeys.size());
+                Iterator<SelectionKey> iter = selectedKeys.iterator();
+                while (iter.hasNext()) {
+                    SelectionKey key = iter.next();
+                    SocketChannel clientChannel;
+                    if (key.isAcceptable()) {
+                        ServerSocketChannel channel = (ServerSocketChannel) key.channel();
+                        clientChannel = channel.accept();
+                        // 将处理对应的客户端信息socketChannel设置为非阻塞
+                        clientChannel.configureBlocking(false);
+                        // 为该通道注册读就绪事件, 选择器会询问该通道的状态,当该通道就绪时,
+                        clientChannel.register(selector, SelectionKey.OP_READ);
+                    } else if (key.isReadable()) {
+                        clientChannel = (SocketChannel) key.channel();
+                        // 参数设置3 为了简化实现 不考虑半包、粘包问题
+                        ByteBuffer byteBuffer = ByteBuffer.allocate(3);
+                        clientChannel.read(byteBuffer);
+                        String msg = new String(byteBuffer.array());
+                        System.out.println("server:" + msg);
+                        key.interestOps(SelectionKey.OP_WRITE);
+                    } else if (key.isWritable()) {
+                        clientChannel = (SocketChannel) key.channel();
+                        clientChannel.write(Charset.defaultCharset().encode("Hello NIO"));
+                        key.interestOps(SelectionKey.OP_READ);
+                    }
+                    iter.remove();
+                }
             }
         }
     }
 }
-
-
-//public class NIOServer extends Thread {
-//    public void run() {
-//        try (Selector selector = Selector.open();
-//             ServerSocketChannel serverSocket = ServerSocketChannel.open();) {// 创建Selector和Channel
-//            serverSocket.bind(new InetSocketAddress(InetAddress.getLocalHost(), 8888));
-//            serverSocket.configureBlocking(false);
-//            // 注册到Selector，并说明关注点
-//            serverSocket.register(selector, SelectionKey.OP_ACCEPT);
-//            while (true) {
-//                selector.select();// 阻塞等待就绪的Channel，这是关键点之一
-//                Set<SelectionKey> selectedKeys = selector.selectedKeys();
-//                Iterator<SelectionKey> iter = selectedKeys.iterator();
-//                while (iter.hasNext()) {
-//                    SelectionKey key = iter.next();
-//                    // 生产系统中一般会额外进行就绪状态检查
-//                    sayHelloWorld((ServerSocketChannel) key.channel());
-//                    iter.remove();
-//                }
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//    private void sayHelloWorld(ServerSocketChannel server) throws IOException {
-//        try (SocketChannel client = server.accept();) {          client.write(Charset.defaultCharset().encode("Hello world!"));
-//        }
-//    }
-//}
-
-//首先，通过 Selector.open() 创建一个 Selector，作为类似调度员的角色。
-//然后，创建一个 ServerSocketChannel，并且向 Selector 注册，通过指定 SelectionKey.OP_ACCEPT，告诉调度员，它关注的是新的连接请求。
-//注意，为什么我们要明确配置非阻塞模式呢？这是因为阻塞模式下，注册操作是不允许的，会抛出 IllegalBlockingModeException 异常。
-//Selector 阻塞在 select 操作，当有 Channel 发生接入请求，就会被唤醒。
-//在 sayHelloWorld 方法中，通过 SocketChannel 和 Buffer 进行数据操作，在本例中是发送了一段字符串。

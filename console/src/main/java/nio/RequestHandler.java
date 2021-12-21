@@ -2,12 +2,8 @@ package nio;
 
 import lombok.SneakyThrows;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
 
 public class RequestHandler extends Thread {
     private final Socket socket;
@@ -19,15 +15,10 @@ public class RequestHandler extends Thread {
     @SneakyThrows
     @Override
     public void run() {
-        int random = ThreadLocalRandom.current().nextInt(5, 15);
-        TimeUnit.SECONDS.sleep(random);
+        // 简化实现，不做读取直接发送字符串
         try (PrintWriter out = new PrintWriter(socket.getOutputStream())) {
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
-                String str = in.readLine();
-                System.out.println(Thread.currentThread().getName() + "服务端收到:" + str);
-//                out.println("Hello world!" + str);
-//                out.flush();
-            }
+            out.println("Hello NIO!");
+            out.flush();
         }
     }
 }
