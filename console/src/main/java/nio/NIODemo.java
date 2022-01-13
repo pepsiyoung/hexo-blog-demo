@@ -20,7 +20,7 @@ public class NIODemo {
         TimeUnit.MILLISECONDS.sleep(500);
 
         // 客户端需要发送的消息 server端收到bye就断开连接
-        List<String> msgList = Arrays.asList("WWW", "AMD", "YES");
+        List<String> msgList = Arrays.asList("WWW", "AMD", "YES","bye");
 
         try (Socket client = new Socket(InetAddress.getLocalHost(), 8888)) {
             InetSocketAddress address = new InetSocketAddress(InetAddress.getLocalHost().getHostAddress(), 8888);
