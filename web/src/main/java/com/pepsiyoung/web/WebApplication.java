@@ -25,26 +25,26 @@ public class WebApplication {
         SpringApplication.run(WebApplication.class, args);
     }
 
-    @Bean
-    public ApplicationRunner applicationRunner(ApplicationContext applicationContext) {
-        return args -> {
-            User user = new User();
-            DataBinder binder = new DataBinder(user, "");
-
-            Map<String, Object> source = ImmutableMap.of("id", 99, "name", "pepsiYoung");
-            PropertyValues propertyValues = new MutablePropertyValues(source);
-            binder.bind(propertyValues);
-            System.out.println(user);
-            System.out.println(binder.getBindingResult());
-
-//            List<User> list = excelToList(User.class);
-//            System.out.println(list);
+//    @Bean
+//    public ApplicationRunner applicationRunner(ApplicationContext applicationContext) {
+//        return args -> {
+//            User user = new User();
+//            DataBinder binder = new DataBinder(user, "");
 //
-//            User.class.getField("").getAnnotation()
-
-            SpringApplication.exit(applicationContext);
-        };
-    }
+//            Map<String, Object> source = ImmutableMap.of("id", 99, "name", "pepsiYoung");
+//            PropertyValues propertyValues = new MutablePropertyValues(source);
+//            binder.bind(propertyValues);
+//            System.out.println(user);
+//            System.out.println(binder.getBindingResult());
+//
+////            List<User> list = excelToList(User.class);
+////            System.out.println(list);
+////
+////            User.class.getField("").getAnnotation()
+//
+//            SpringApplication.exit(applicationContext);
+//        };
+//    }
 
     public static <T> List<T> excelToList(Class<T> clazz) throws InstantiationException, IllegalAccessException, NoSuchFieldException {
         List<T> resList = new ArrayList<>();

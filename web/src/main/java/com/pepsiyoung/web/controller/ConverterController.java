@@ -1,12 +1,20 @@
 package com.pepsiyoung.web.controller;
 
+import com.pepsiyoung.web.config.LocalDateTimeConverter;
 import com.pepsiyoung.web.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.core.convert.support.GenericConversionService;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("converter")
@@ -25,13 +33,12 @@ public class ConverterController {
 //    }
 
     @GetMapping("localDateTime/{date}")
-    public String convertLocalDateTime(@PathVariable LocalDateTime date) {
-        return date.toString();
+    public LocalDateTime convertLocalDateTime(@PathVariable LocalDateTime date) {
+        return date;
     }
 
     @GetMapping("date/{date}")
     public String convertDate(@PathVariable Date date) {
-        System.out.println(date);
         return date.toString();
     }
 
@@ -49,9 +56,8 @@ public class ConverterController {
     ConversionService conversionService;
 
     @GetMapping("test")
-    public Object test() {
+    public LocalDateTime test() {
         String source = "2020-12-01 12:23:23";
         return conversionService.convert(source, LocalDateTime.class);
-        // return conversionService.convert(Arrays.asList(1, 2, 3, 4, 5), String.class);
     }
 }
