@@ -48,8 +48,10 @@ public class ConverterController {
     }
 
     @PostMapping("json")
-    public String convertJson(@RequestBody User user) {
-        return user.toString();
+    public User convertJson(@RequestBody User user) {
+        if (user.getLocalDateTime() == null)
+            user.setLocalDateTime(LocalDateTime.now());
+        return user;
     }
 
     @Autowired

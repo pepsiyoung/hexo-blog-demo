@@ -1,2 +1,6 @@
+server:
+  port: 9090
+
 sms:
   operator: 联通
+
