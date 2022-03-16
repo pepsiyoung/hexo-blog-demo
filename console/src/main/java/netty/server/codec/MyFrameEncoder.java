@@ -3,8 +3,8 @@ package netty.server.codec;
 
 import io.netty.handler.codec.LengthFieldPrepender;
 
-public class OrderFrameEncoder extends LengthFieldPrepender {
-    public OrderFrameEncoder() {
+public class MyFrameEncoder extends LengthFieldPrepender {
+    public MyFrameEncoder() {
         super(2);
     }
 }

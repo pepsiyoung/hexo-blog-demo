@@ -3,8 +3,8 @@ package netty.server.codec;
 
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 
-public class OrderFrameDecoder extends LengthFieldBasedFrameDecoder {
-    public OrderFrameDecoder() {
+public class MyFrameDecoder extends LengthFieldBasedFrameDecoder {
+    public MyFrameDecoder() {
         super(10240, 0, 2, 0, 2);
     }
 }

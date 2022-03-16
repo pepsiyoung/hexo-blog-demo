@@ -9,8 +9,9 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import netty.server.codec.OrderFrameDecoder;
-import netty.server.codec.OrderFrameEncoder;
+import netty.server.codec.MyFrameDecoder;
+import netty.server.codec.MyFrameEncoder;
+import netty.server.handler.MsgServerProcessHandler;
 
 public class Server {
     public static void main(String[] args) throws InterruptedException {
@@ -27,8 +28,8 @@ public class Server {
             protected void initChannel(NioSocketChannel ch) throws Exception {
                 ChannelPipeline pipeline = ch.pipeline();
 
-                pipeline.addLast(new OrderFrameDecoder());
-                pipeline.addLast( new OrderFrameEncoder());
+                pipeline.addLast(new MyFrameDecoder());
+                pipeline.addLast( new MyFrameEncoder());
 
                 pipeline.addLast(new StringDecoder());
                 pipeline.addLast(new StringEncoder());

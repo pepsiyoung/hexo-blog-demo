@@ -10,8 +10,9 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import netty.client.codec.OrderFrameDecoder;
-import netty.client.codec.OrderFrameEncoder;
+import netty.client.codec.MyFrameDecoder;
+import netty.client.codec.MyFrameEncoder;
+import netty.client.dispatcher.ResponseDispatcherHandler;
 
 public class Client {
 
@@ -27,8 +28,8 @@ public class Client {
             protected void initChannel(NioSocketChannel ch) throws Exception {
                 ChannelPipeline pipeline = ch.pipeline();
 
-                pipeline.addLast(new OrderFrameDecoder());
-                pipeline.addLast(new OrderFrameEncoder());
+                pipeline.addLast(new MyFrameDecoder());
+                pipeline.addLast(new MyFrameEncoder());
 
                 pipeline.addLast(new StringDecoder());
                 pipeline.addLast(new StringEncoder());
@@ -41,8 +42,8 @@ public class Client {
         ChannelFuture channelFuture = bootstrap.connect("127.0.0.1", 9090);
         channelFuture.sync();
 
-        channelFuture.channel().writeAndFlush("Hello World");
-        channelFuture.channel().writeAndFlush("xxxxxxxxxxx");
+        channelFuture.channel().writeAndFlush("Hello World1");
+        channelFuture.channel().writeAndFlush("Hello World2");
 
         channelFuture.channel().closeFuture().sync();
     }
