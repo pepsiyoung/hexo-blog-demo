@@ -16,6 +16,7 @@ public class TestDemo {
         executorService.schedule(() -> operationResultFuture.setSuccess("AAA"), 3, TimeUnit.SECONDS);
 
 
-        System.out.println("结果:" + operationResultFuture.get());
+        System.out.println("结果1:" + operationResultFuture.get());
+        System.out.println("结果2:" + operationResultFuture.get());
     }
 }

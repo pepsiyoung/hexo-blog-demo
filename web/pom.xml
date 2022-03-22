@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>web</artifactId>
+    <version>1.0.4</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -32,18 +33,17 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
         <!-- 引入自定义starter-->
-        <dependency>
-            <groupId>com.pepsiyoung</groupId>
-            <artifactId>sms-spring-boot-starter</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>com.pepsiyoung</groupId>-->
+        <!--            <artifactId>sms-spring-boot-starter</artifactId>-->
+        <!--            <version>0.0.1-SNAPSHOT</version>-->
+        <!--        </dependency>-->
         <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>31.0.1-jre</version>
+            <version>31.1-jre</version>
         </dependency>
-
         <!-- testable-->
         <dependency>
             <groupId>com.alibaba.testable</groupId>
@@ -64,12 +64,67 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.6.0</version>
+                <executions>
+                    <execution>
+                        <id>repackage</id>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <mainClass>com.pepsiyoung.web.WebApplication</mainClass>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
                 <configuration>
-                    <argLine>-javaagent:${settings.localRepository}/com/alibaba/testable/testable-agent/${testable.version}/testable-agent-${testable.version}.jar</argLine>
+                    <argLine>
+                        -javaagent:${settings.localRepository}/com/alibaba/testable/testable-agent/${testable.version}/testable-agent-${testable.version}.jar
+                    </argLine>
+                </configuration>
+            </plugin>
+            <!-- 官方 docker 插件-->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.6.0</version>
+                <configuration>
+                    <image>
+                        <!--配置镜像名称-->
+                        <name>localhost:5088/${project.artifactId}:${project.version}</name>
+                        <publish>true</publish>
+                    </image>
+                    <docker>
+                        <publishRegistry>
+                            <username>pepsiyoung</username>
+                            <password>123456</password>
+                            <url>https://localhost:5088/v2</url>
+                        </publishRegistry>
+                    </docker>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.39.1</version>
+                <configuration>
+                    <images>
+                        <image>
+                            <name>web-1.0.4.jar</name>
+                            <registry>localhost:5088</registry>
+                            <build>
+                                <!-- 使用 Dockerfile 文件，默认地址是 src/main/docker -->
+                                <dockerFile>Dockerfile</dockerFile>
+                                <assembly>
+                                    <descriptorRef>artifact</descriptorRef>
+                                </assembly>
+                            </build>
+                        </image>
+                    </images>
                 </configuration>
             </plugin>
         </plugins>

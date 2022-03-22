@@ -1,6 +1,7 @@
 package com.pepsiyoung.web.controller;
 
 import com.pepsiyoung.web.domain.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,16 +17,14 @@ public class TestController {
         User user = new User();
         user.setId(1);
         user.setLocalDateTime(LocalDateTime.now());
-
-        try {
-            int a = 0;
-            int res = 10 / a;
-            System.out.println(res);
-        } catch (Exception e) {
-            user.setId(2);
-            return user;
-        }
-
         return user;
+    }
+
+    @Value("${text.name}")
+    String nickname;
+
+    @GetMapping("/nickname")
+    public String nickname() {
+        return "nickname:" + nickname + "/" + LocalDateTime.now();
     }
 }
