@@ -12,6 +12,7 @@
         <module>console</module>
         <module>web</module>
         <module>sms-spring-boot-starter</module>
+        <module>web2</module>
     </modules>
 
     <properties>

@@ -7,6 +7,7 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.support.GenericConversionService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,8 +33,8 @@ public class ConverterController {
 ////        }
 //    }
 
-    @GetMapping("localDateTime/{date}")
-    public LocalDateTime convertLocalDateTime(@PathVariable LocalDateTime date) {
+    @GetMapping("localDateTime")
+    public LocalDateTime convertLocalDateTime(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-ddHH:mm:ss") LocalDateTime date) {
         return date;
     }
 
