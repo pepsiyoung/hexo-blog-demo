@@ -1,34 +1,23 @@
 package basic;
 
-import java.util.Stack;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.stream.IntStream;
 
 public class Demo3 {
 
-    public static void main(String[] args) {
-        String str = "}(])[{(}([[}])}]))})]]({{(])";
+    public static void main(String[] args) throws ParseException {
+//        IntStream.rangeClosed(1, 10).forEach(System.out::println);
 
-//        System.out.println(3 & 1);
-        System.out.println(isValid(str));
-    }
+        DateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+        Date validTime = dateFormat1.parse("2020-03-01");
+        Date failureTime = dateFormat1.parse("2022-04-07");
 
-    public static boolean isValid(String s) {
-        // write code here
-        int len = s.length();
-        if(!s.contains(")") && !s.contains("]") && !s.contains("}")) return false;
-        if ((len & 1) == 1) return false;
-
-        Stack<Character> stack = new Stack<>();
-        for (char c : s.toCharArray()) {
-            if ("{[(".contains(String.valueOf(c))) {
-                stack.push(c);
-            } else {
-                if(stack.isEmpty()) return false;
-                Character popValue = stack.pop();
-                if (popValue == '(' && c != ')') return false;
-                if (popValue == '[' && c != ']') return false;
-                if (popValue == '{' && c != '}') return false;
-            }
-        }
-        return true;
+        Date current = new Date();
+        int res1 = validTime.compareTo(current);
+        int res2 = failureTime.compareTo(current);
+        System.out.println(res1 > 0 || res2 < 0);
     }
 }

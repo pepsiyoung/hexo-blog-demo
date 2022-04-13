@@ -4,9 +4,11 @@ import com.pepsiyoung.web2.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 @RestController
 @RequestMapping("/test")
@@ -19,12 +21,15 @@ public class TestController {
 
     @GetMapping("/version")
     public LocalDateTime getVersion() {
-        String source = "2020-12-01 12:23:23";
-        return conversionService.convert(source, LocalDateTime.class);
+//        String source = "2020-12-01 12:23:23";
+//        return conversionService.convert(source, LocalDateTime.class);
 
-//        Integer[] array = new Integer[3];
-//        Integer[] convert = conversionService.convert(Arrays.asList(1, 2, 3),array.getClass());
-//        System.out.println(convert);
+//        Integer[] convert = conversionService.convert(Arrays.asList(1, 2, 3), Integer[].class);
+//        System.out.println(Arrays.toString(convert));
+
+        DefaultConversionService defaultConversionService = new DefaultConversionService();
+//        defaultConversionService.addConverter(new MyGenericConverter());
+        return null;
     }
 
     @PostMapping("")
