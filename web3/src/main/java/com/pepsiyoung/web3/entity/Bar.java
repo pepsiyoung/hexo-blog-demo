@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Bar extends Person {
-    @JsonFormat
     private String name;
     private Integer age;
 }

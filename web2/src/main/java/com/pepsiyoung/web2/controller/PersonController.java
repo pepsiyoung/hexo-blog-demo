@@ -3,6 +3,7 @@ package com.pepsiyoung.web2.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pepsiyoung.web2.demo.BeanLifeCycle;
 import com.pepsiyoung.web2.entity.Person;
 import com.pepsiyoung.web2.mapper.PersonMapper;
 import com.pepsiyoung.web2.service.IPersonService;
@@ -22,9 +23,13 @@ public class PersonController {
 //    @Autowired
 //    PersonMapper personMapper;
 
+    @Autowired
+    BeanLifeCycle beanLifeCycle;
+
     @GetMapping("test")
     public List<Person> test() {
 //        return personMapper.getCustomList();
+        beanLifeCycle.customClose();
         return null;
     }
 

@@ -1,5 +1,6 @@
 package com.pepsiyoung.web2.config;
 
+import com.pepsiyoung.web2.config.converter.LocalDateConverter;
 import com.pepsiyoung.web2.config.converter.LocalDateTimeConverter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
@@ -12,5 +13,6 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(new LocalDateTimeConverter());
+        registry.addConverter(new LocalDateConverter());
     }
 }

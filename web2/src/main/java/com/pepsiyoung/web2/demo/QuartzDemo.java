@@ -1,5 +1,6 @@
 package com.pepsiyoung.web2.demo;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 
 @Component
 @EnableScheduling
+@Profile("discard")
 public class QuartzDemo implements SchedulingConfigurer {
 
     String indSchedulerJobTime = "*/2 * * * * ?";
