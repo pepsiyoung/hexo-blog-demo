@@ -12,6 +12,7 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(new LocalDateTimeConverter());
+        registry.addConverter(new LocalDateTimeConverter());
         registry.addConverterFactory(new PersonConverter());
     }
 }

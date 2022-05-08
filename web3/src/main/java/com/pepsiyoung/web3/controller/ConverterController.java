@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @RestController
@@ -24,6 +25,11 @@ public class ConverterController {
     @GetMapping("/time")
     public LocalDateTime getTime(@RequestParam LocalDateTime localDateTime) {
         return localDateTime;
+    }
+
+    @GetMapping("/date")
+    public LocalDate getDate(@RequestParam LocalDate localDate) {
+        return localDate;
     }
 
     @GetMapping("")
