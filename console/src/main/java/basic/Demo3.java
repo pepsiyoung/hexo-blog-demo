@@ -6,6 +6,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Demo3 {
 
@@ -20,8 +22,5 @@ public class Demo3 {
 //        int res1 = validTime.compareTo(current);
 //        int res2 = failureTime.compareTo(current);
 //        System.out.println(res1 > 0 || res2 < 0);
-
-        String res = MapUtils.getString(null,"xx","vvv");
-        System.out.println(res);
     }
 }
