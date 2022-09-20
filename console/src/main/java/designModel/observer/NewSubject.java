@@ -1,4 +1,4 @@
-package observer;
+package designModel.observer;
 
 import java.util.ArrayList;
 import java.util.List;

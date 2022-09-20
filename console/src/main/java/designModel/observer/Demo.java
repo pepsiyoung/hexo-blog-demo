@@ -1,5 +1,8 @@
-package observer;
+package designModel.observer;
 
+/**
+ * 观察者模式
+ */
 public class Demo {
     public static void main(String[] args) {
         NewSubject newSubject = new NewSubject() {
